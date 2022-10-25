@@ -1,4 +1,15 @@
-//This class implements a doubly Linked List
+/*
+CSC 205: #14891 / Monday 11AM-1PM
+Minilab: 6
+Authors: Stephen Arel & 36825961, Dr. Ghaith Salman
+Description: This class is derived from a single-linked list to be a double-linked list data structure, including methods:
+	-addLast
+	-addFirst
+	-removeFirst
+	-removeLast
+	-add
+	-remove
+ */
 
 import java.util.*;
 
@@ -137,14 +148,8 @@ public class DLList<E>
 			this.removeFirst();
 			return true;
 		}
-		
-		else if (tail.data.equals(obj)) //is it at the end? If so, remove it.
-		{
-			this.removeLast();
-					return true;
-		}
 
-		else    //not at front or last, so traverse the list to find the one to be deleted (know its there)
+		else    //not at front, so traverse the list to find the one to be deleted (know its there)
 		{
 			DLLNode<E> doomed = head;
 			while (!doomed.data.equals(obj))
@@ -157,14 +162,17 @@ public class DLList<E>
 
 			//now we have a pointer to the node to be deleted and the one in front
 			               //draw it out to see how links must change...
-			inFront.next = doomed.next;
-			doomed.next.prev = inFront;
+			if (doomed.next != null) { //If doomed is not the tail.
+				doomed.next.prev = inFront;
+				inFront.next = doomed.next;
+			}
+			else //If doomed is the tail
+				inFront.next = doomed.prev = null;
+
 
 			//also...if the one that was deleted was the tail, we must reset the tail
-			/* This is no longer necessary, as .removeLast method now reassings the tail. We have already checked if tail.data.equals obj at this point.
 			if (doomed == tail)
 				tail = inFront;
-			 */
 		}
 
 		return true;   //found it; links have been changed
